@@ -1,0 +1,4 @@
+CSC10002,Ky thuat lap trinh,9,9
+CSC10004,Cau truc du lieu va giai thuat,9.5,8
+CSC10009,He thong may tinh,5,5
+MTH00008,Dai so tuyen tinh,7,6

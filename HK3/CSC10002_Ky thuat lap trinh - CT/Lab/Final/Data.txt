@@ -1,0 +1,33 @@
+8
+CSC10004
+Cau truc du lieu va giai thuat
+9.5
+8
+CSC10002
+Ky thuat lap trinh
+3
+2
+BAA00102
+Kinh te chinh tri Mac-Lenin
+-9
+10
+MTH00008
+Dai so tuyen tinh
+7
+6
+CSC10009
+He thong may tinh
+8.1
+8.2
+MTH00006
+Vi tich phan 2
+10
+17
+CSC10002
+Ky thuat lap trinh
+9
+9
+CSC10009
+He thong may tinh
+5
+5
