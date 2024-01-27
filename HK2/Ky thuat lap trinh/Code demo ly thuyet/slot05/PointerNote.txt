@@ -1,0 +1,16 @@
+ptr: con trỏ
+*ptr: giá trị của địa chỉ ptr đang trỏ
+(*ptr).attribute  <=> ptr->attribute
+ptr[i] <=> *(ptr+i)  
+ptr[i].attribute
+(ptr+i)->attribute 
+(&ptr[i])->attribute
+
+
+
+
+
+
+a[i][j]
+
+a[i*n + j]
