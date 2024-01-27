@@ -1,0 +1,13 @@
+3 5
+# # # e a
+# # # F h
+# # # E b
+3 2
+
+0.1.10
+
+70 15
+Vietnam,10,10
+Congo,10,10
+Falkland Islands,10,10
+Anguilla,10,10
