@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1280 720" style="enable-background:new 0 0 1280 720;" xml:space="preserve">
+<g>
+	<g>
+		<rect fill-opacity="1" fill="rgb(23, 99, 4)" x="0.5" y="0.5" width="1279" height="719"/>
+		<path d="M1279,1v718H1V1H1279 M1280,0H0v720h1280V0L1280,0z"/>
+	</g>
+	<text x="200" y="400" fill="rgb(255, 255, 255)" font-size="120">Merry Christmas</text>
+</g>
+<g>
+	<circle fill-opacity="1" fill="rgb(255, 0, 0)" stroke="rgb(255, 255, 255)" stroke-width="1" cx="123.5" cy="213.5" r="35.5"/>
+	<circle fill-opacity="1" fill="rgb(255, 0, 0)" stroke="rgb(255, 255, 255)" stroke-width="1" cx="1193" cy="251" r="23"/>
+	<line stroke="rgb(255, 255, 255)" stroke-width="1" x1="123" y1="0" x2="123" y2="178"/>
+	<line stroke="rgb(255, 255, 255)" stroke-width="1" x1="1193" y1="0" x2="1193" y2="228"/>
+	<polyline fill-opacity="1" fill="rgb(255, 255, 255)" points="0,547.5 118.5,478.5 214.5,542.5 431.5,486.5 440.5,569.5 616.5,449.5 732.5,565.5 811.5,477.5 
+		905.5,532.5 1048.5,419.5 1135.5,527.5 1211.5,479.5 1280,527.5 1280,720 0,720 0,551.67 	"/>
+</g>
+<g>
+	<polygon fill="rgb(255, 255, 255)" fill-opacity="1" transform="rotate(-10)" points="346,44.67 362.26,77.62 398.62,82.9 372.31,108.55 378.52,144.76 346,127.66 313.48,144.76 
+		319.69,108.55 293.38,82.9 329.74,77.62 	"/>
+	<polygon fill="rgb(255, 255, 255)" fill-opacity="1" transform="scale(2, 2)" points="877.5,127.09 887.02,146.39 908.32,149.49 892.91,164.51 896.55,185.72 877.5,175.7 858.45,185.72 
+		862.09,164.51 846.68,149.49 867.98,146.39 	"/>
+	<polygon fill="rgb(255, 255, 255)" fill-opacity="1" transform="rotate(5)" points="512.5,148.22 523.46,170.42 547.95,173.98 530.23,191.26 534.41,215.66 512.5,204.14 490.59,215.66 
+		494.77,191.26 477.05,173.98 501.54,170.42 	"/>
+	<polygon fill="rgb(255, 255, 255)" fill-opacity="1" points="1020,27.81 1028.28,44.6 1046.81,47.29 1033.4,60.36 1036.57,78.8 1020,70.09 1003.43,78.8 
+		1006.6,60.36 993.19,47.29 1011.72,44.6 	"/>
+	<polygon fill="rgb(255, 255, 255)" fill-opacity="1" points="679,33.7 686.73,49.36 704.01,51.87 691.51,64.06 694.46,81.28 679,73.15 663.54,81.28 666.49,64.06 
+		653.99,51.87 671.27,49.36 	"/>
+</g>
+</svg>

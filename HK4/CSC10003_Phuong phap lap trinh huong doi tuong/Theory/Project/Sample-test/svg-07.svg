@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+    <rect stroke="darkslategray" x="640" y="50" width="400" height="350" fill="grey" fill-opacity="0.24" />
+    <g transform="translate(160, 90)" stroke-width="4" stroke="black">
+        <rect fill-opacity="0.2" x="130" y="0" width="700" height="600" fill="none" />
+        <g stroke-opacity="0.75" stroke="midnightblue" fill="rgb(153, 204, 255)" fill-opacity="1">
+            <g stroke-opacity="0.75" fill-opacity="1" stroke-width="3" fill="blueviolet">
+                <polygon points="300,300 330,210 420,210 350,150 390,60 300,120 210,60 250,150 180,210 270,210"
+                    fill="rgb(254, 52, 126)" />
+                <line x1="300" y1="300" x2="300" y2="360" stroke="rgb(200,8,21)" stroke-width="2" />
+                <line x1="420" y1="210" x2="420" y2="270" stroke="rgb(200,8,21)" stroke-width="2" />
+                <line x1="390" y1="60" x2="390" y2="130" stroke="rgb(200,8,21)" stroke-width="2" />
+                <line x1="210" y1="60" x2="210" y2="130" stroke="rgb(200,8,21)" stroke-width="2" />
+                <line x1="180" y1="210" x2="180" y2="270" stroke="rgb(200,8,21)" stroke-width="2" />
+
+                <polygon points="655,300 685,210 775,210 705,150 745,60 655,120 565,60 605,150 535,210 625,210"
+                    fill="rgb(139,0,255)" />
+                <line x1="655" y1="300" x2="655" y2="360" stroke="rgb(200,8,21)" stroke-width="2" />
+                <line x1="775" y1="210" x2="775" y2="270" stroke="rgb(200,8,21)" stroke-width="2" />
+                <line x1="745" y1="60" x2="745" y2="130" stroke="rgb(200,8,21)" stroke-width="2" />
+                <line x1="565" y1="60" x2="565" y2="130" stroke="rgb(200,8,21)" stroke-width="2" />
+                <line x1="535" y1="210" x2="535" y2="270" stroke="rgb(200,8,21)" stroke-width="2" />
+
+                <polyline points="450,350 480,280 505,350" fill-opacity="0.8" fill="CYAN" />
+
+                <ellipse cx="480" cy="450" rx="100" ry="40" fill="yellow" />
+            </g>
+        </g>
+        <g fill="black" stroke="navy" font-family="times new roman" stroke-width="2.0">
+            <text x="655" y="350" font-size="30" text-anchor="middle" transform="rotate(25) translate(50,60)">sleep all
+                day</text>
+        </g>
+    </g>
+
+    <text font-family="times new roman" x="640" y="720" fill="black" font-size="40" stroke-opacity="0.75"
+        stroke-width="2.0" fill-opacity="0.95" stroke="navy" text-anchor="middle" font-style="italic">...</text>
+</svg>

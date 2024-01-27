@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+
+  <g stroke-width="2" transform="translate(640,360) scale(5)">
+    <g fill="none">
+      <ellipse stroke="rgb(102,137,154)" rx="6" ry="44" />
+      <ellipse stroke="rgb(225,216,93)" rx="6" ry="44" transform="rotate(-66)" />
+      <ellipse stroke="rgb(128,163,207)" rx="6" ry="44" transform="rotate(66)" />
+      <circle stroke="rgb(75,84,31)" r="44" />
+    </g>
+    <g fill="rgb(102,137,154)" stroke="white" stroke-width="2">
+      <circle fill="rgb(128,163,207)" r="13" />
+      <circle cy="-44" r="9" />
+      <circle cx="-40" cy="18" r="9" />
+      <circle cx="40" cy="18" r="9" />
+    </g>
+  </g>
+
+  <rect stroke="darkslategray" x="0" y="0" width="1280" height="720" fill="deepskyblue" fill-opacity="0.24" />
+  <polygon fill-opacity="0.72" fill="yellow" stroke="red" stroke-width="5" stroke-opacity="0.75"
+    points="100,10 40,198 190,78 10,78 160,198" transform="translate(590, 10) scale(0.5)" />
+
+  <g transform="translate(160, 90)" stroke-width="2" stroke="navy">
+    <rect fill-opacity="0.4" x="0" y="0" width="960" height="540" fill="rgb(0,100,0)  " />
+
+    <g stroke-opacity="0.75" stroke="midnightblue" fill="rgb(153, 204, 255)" fill-opacity="0.5">
+      <line x1="0" y1="270" x2="960" y2="270" stroke="darkmagenta" />
+      <line x1="480" y1="0" x2="480" y2="540" stroke="darkmagenta" />
+      <polygon fill-opacity="0.4" points="0,270 480,0 480,0 960,270 960,270 480,540 0,270" />
+      <g stroke-opacity="0.75" fill-opacity="0.2" stroke-width="3" fill="blueviolet">
+        <ellipse cx="480" cy="270" rx="240" ry="135" fill="yellow" />
+        <polyline points="0,40 -40,-40 40,0" />
+        <polyline points="0,40 -40,-40 40,0" transform="translate(960,0) rotate(90)" />
+        <circle cx="0" cy="540" r="40" />
+        <circle cx="0" cy="540" r="40" transform="translate(960,0)" />
+      </g>
+    </g>
+
+    <g fill="yellow" stroke="purple" font-family="times new roman" stroke-width="2.5">
+      <text x="480" y="270" font-size="40" text-anchor="middle" font-style="italic">Middle</text>
+      <text x="0" y="540" font-size="40">Left</text>
+      <text x="960" y="540" font-size="40" text-anchor="end">Right</text>
+    </g>
+  </g>
+
+  <text font-family="times new roman" x="640" y="720" fill="yellow" font-size="40" stroke-opacity="0.75"
+    stroke-width="2.5" fill-opacity="0.95" stroke="darkmagenta" text-anchor="middle" font-style="italic">Bottom</text>
+
+</svg>

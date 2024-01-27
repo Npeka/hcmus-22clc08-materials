@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(300, 300)">
+    <rect x="1" y="0" width="320" height="200" stroke="black" fill="red" />
+    <g transform="translate(160, 100) scale(1.5)">
+        <polygon points="0,-40 10,-10 40,-10 15,10 25,40 0,20 -25,40 -15,10 -40,-10 -10,-10" 
+                 stroke="black" stroke-width="2" fill="yellow" />
+    </g>
+  </g>
+</svg>

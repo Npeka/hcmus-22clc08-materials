@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg">
+  <rect fill="rgb(255, 255, 255)" stroke="rgb(200,200,200)" stroke-width="2" x="25" y="25" width="800" height="400" />
+  <g transform="translate(25, 25)">
+    <circle cx="400" cy="200" r="150" fill="rgb(0, 0, 0)" />
+    <polygon fill="rgb(255, 255, 255)" points="800,0 0,400 800,400" />
+    <circle fill-opacity="0" cx="400" cy="200" r="150" stroke="rgb(0, 0, 0)" stroke-width="8" />
+    <circle cx="400" cy="125" r="20" fill="rgb(255, 255, 255)" />
+    <circle cx="400" cy="275" r="20" fill="rgb(0, 0, 0)" />
+    <g stroke="rgb(0,0,0)" stroke-width="2">
+      <text x="200" y="125" fill="rgb(0,0,0)" font-size="30" >Yin</text>
+      <text x="550" y="275" fill="rgb(255,255,255)" font-size="30" >Yang</text>
+    </g>
+  </g>
+</svg>

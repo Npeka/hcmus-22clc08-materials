@@ -1,0 +1,19 @@
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 324.7 442.96">
+   <g stroke="#000">
+      <g fill="#fff">
+         <circle cx="156.19" cy="80.16" r="79.66"/>
+         <ellipse cx="156.19" cy="301.14" rx="137.98" ry="141.32"/>
+         <circle cx="124.02" cy="48.76" r="12.26"/>
+         <circle cx="180.7" cy="48.76" r="12.26"/>
+      </g>
+   </g>
+   <ellipse cx="122.36" cy="48.76" rx="10.6" ry="11.62"/>
+   <ellipse cx="179.04" cy="48.76" rx="10.6" ry="11.62"/>
+   <g fill="none" stroke="#000">
+      <polyline points="273.38 269.35 294.17 167.48 273.38 139.14"/>
+      <polyline points="324.44 149.35 294.17 167.48 298.91 140.16"/>
+      <polyline points="51.32 275.27 30.54 173.4 51.32 145.06"/>
+      <polyline points="0.26 155.27 30.54 173.4 25.79 146.08"/>
+   </g>
+   <path d="M351,430.19H294.28l44.42,20.43S351,450.62,351,430.19Z" transform="translate(-194.77 -350.03)" fill="#ff7f00" stroke="#000"/>
+</svg>

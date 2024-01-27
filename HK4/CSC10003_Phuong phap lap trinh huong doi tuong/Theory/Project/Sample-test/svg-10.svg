@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(50, 50)">
+    <path d="M50,50 C50,150 150,150 150,50 C150,-50 250,-50 250,50 C250,150 350,150 350,50 C350,-50 450,-50 450,50 C450,150 550,150 550,50 C550,-50 650,-50 650,50 C650,150 750,150 750,50 C750,-50 850,-50 850,50 C850,150 950,150 950,50 L950,150 L50,150 Z" fill="skyblue" />
+    <line x1="45" y1="150" x2="1000" y2="150" stroke="black" stroke-width="2" />
+     <text x="400" y="250" font-family="Time New Romand" font-size="80" fill="red">HCMUS</text>
+    <text x="450" y="300" font-family="Time New Romand" font-size="40" fill="black">22CLC08</text>
+</g>
+</svg>
+
