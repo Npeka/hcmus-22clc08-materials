@@ -6,4 +6,4 @@ Gmail: npkhang287@gmail.com
 - Các môn toán, lý chỉ mới có slide, đề thi các năm sẽ update sau
 - Các môn code như KTLT, DSA,... đã có các đề kiểm tra mẫu, nếu cần lời giải mình sẽ up tham khảo
 
- ### Nếu có sai sót hay cần thêm gì thì các bạn liên hệ qua mình nhe
+ ### Nếu có sai sót hay cần thêm gì thì các bạn liên hệ mình nhe
