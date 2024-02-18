@@ -5,9 +5,11 @@
 - Các môn code như KTLT, DSA,... đã có các đề kiểm tra mẫu, nếu cần lời giải mình sẽ up tham khảo
 
 ## Pass sách (giá update sau :> )
-- Nhập môn lập trình:
-- Mạng máy tính: có highlight, hơi cũ
-- Lập trình hướng đối tượng: còn mới
+- Nhập môn lập trình (có highlight, còn mới): 40k
+- Mạng máy tính (có highlight, hơi cũ 1 chút): 45k
+- Lập trình hướng đối tượng:
+- Cơ sở dữ liệu:
+- Hệ điều hành:
 
 ## Nếu có sai sót hay cần thêm gì thì các bạn liên hệ mình nhe
 - Facebook: https://www.facebook.com/profile.php?id=100088048156021 \
