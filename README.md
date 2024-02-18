@@ -6,7 +6,7 @@
 
 ## Pass sách (giá update sau :> )
 - Nhập môn lập trình (có highlight, còn mới): 40k
-- Mạng máy tính (có highlight, hơi cũ 1 chút): 45k
+- Mạng máy tính (có highlight, hơi cũ 1 chút): 40k
 - Lập trình hướng đối tượng:
 - Cơ sở dữ liệu:
 - Hệ điều hành:
