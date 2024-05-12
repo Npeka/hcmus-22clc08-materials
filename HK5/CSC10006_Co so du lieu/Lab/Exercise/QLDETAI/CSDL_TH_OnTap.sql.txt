@@ -1,0 +1,318 @@
+/*****************************PHEP CHIA*****************************/
+--Q58.	Cho biết tên giáo viên nào mà tham gia (đề tài) đủ tất cả các chủ đề.
+--gv001 có tham gia đề tài DT01, thuộc chủ đề giáo dục --> gv001 có tham gia chủ đề giáo dục 
+--T(magv); S(maCD)--> bảng chude; R(magv, madt)xDETAI(madt, macd)
+
+--Cach #1: Dem
+SELECT T.MAGV, T.HOTEN --Ứng với từng bộ T trong R, đếm coi mỗi T thoả mãn bao nhiêu S 
+FROM GIAOVIEN T JOIN THAMGIADT R ON T.MAGV = R.MAGV
+                JOIN DETAI DT ON R.MADT = DT.MADT
+GROUP BY T.MAGV, T.HOTEN --Ứng với từng gv đếm số lượng chủ đề giáo viên tham gia 
+HAVING COUNT(DISTINCT DT.MACD) = (SELECT COUNT(*) FROM CHUDE) --Đếm tổng số S(macd) mình có 
+
+--Cach #2:
+SELECT T.MAGV, T.HOTEN
+FROM GIAOVIEN T
+--Tìm xem bộ S nào không thoả mãn T 
+--Nếu rỗng --> T thoả mãn tất cả
+--Nếu tìm thấy ít nhất một S không thoả T --> T không thoả mãn tất cả
+WHERE NOT EXISTS (SELECT S.MACD --DS TAT CA CHU DE CO TRONG BANG CHUDE S
+                  FROM CHUDE S 
+                  EXCEPT 
+                  SELECT DT.MACD --DS CHU DE GIAOVIEN T THAM GIA
+                  FROM THAMGIADT R JOIN DETAI DT ON R.MADT = DT.MADT
+                  WHERE R.MAGV = T.MAGV)
+    AND EXISTS (select * from chude) --Kiểm tra số chia S khác rỗng 
+
+--Q66.	Cho biết họ tên, ngày sinh, tên khoa, tên trưởng khoa 
+--của giáo viên tham gia tất cả các đề tài có giáo viên “Nguyễn Hoài An” tham gia.--> dùng phép chia tìm ra giaovien T
+--T(magv); S(madt) cua Nguyen Hoai An tham gia --ThamGiaDT TG_NHA, GIAOVIEN GV_NHA ; R(magv, madt) --ThamGiaDT TG_T
+--Cach #1: Dem
+Select T.MAGV, T.HOTEN, T.NGSINH, K.TENKHOA, trk.HOTEN as TRUONGKHOA
+From GIAOVIEN T JOIN BOMON BM on T.MABM = BM.MABM
+                JOIN KHOA K on K.MAKHOA = BM.MAKHOA
+                JOIN GIAOVIEN TRK on TRK.MAGV = K.TRUONGKHOA
+                JOIN THAMGIADT TG_T on TG_T.MAGV = t.MAGV
+                JOIN THAMGIADT TG_NHA on TG_T.MADT = TG_NHA.MADT
+                JOIN GIAOVIEN GV_NHA on TG_NHA.MAGV = GV_NHA.MAGV
+Where T.HOTEN != N'Nguyễn Hoài An' and GV_NHA.HOTEN = N'Nguyễn Hoài An'
+GROUP BY T.MAGV, T.HOTEN, T.NGSINH, K.TENKHOA, trk.HOTEN
+--ứng với từng anh giáo viên T (khác Hoài An), đếm xem mỗi anh T tham gia bao nhiêu đề tài mà Nguyễn Hoài An tham gia
+having count(distinct tg_t.MADT) = (select count (distinct tg_nha2.MADT) --Đếm S --> Đếm số lượng đề tài mà Nguyễn Hoài An tham gia 
+                                    from THAMGIADT TG_NHA2 JOIN GIAOVIEN GV_NHA2 
+                                                on TG_NHA2.MAGV = GV_NHA2.MAGV
+                                    Where GV_NHA2.HOTEN = N'Nguyễn Hoài An')
+
+
+--Cach #2
+--T(magv); S(madt) cua Nguyen Hoai An tham gia --ThamGiaDT TG_NHA, GIAOVIEN GV_NHA ; R(magv, madt) --ThamGiaDT TG_T
+Select T.MAGV, T.HOTEN, T.NGSINH, K.TENKHOA, trk.HOTEN as TRUONGKHOA
+From GIAOVIEN T JOIN BOMON BM on T.MABM = BM.MABM
+                JOIN KHOA K on K.MAKHOA = BM.MAKHOA
+                JOIN GIAOVIEN TRK on TRK.MAGV = K.TRUONGKHOA
+Where T.HOTEN != N'Nguyễn Hoài An'
+    --Tìm đề tài có NHA tham gia mà T không tham gia 
+    AND NOT EXISTS (SELECT tg_nha.MADT --S: DS ma de tai co Nguyen Hoai An tham gia
+                  FROM THAMGIADT tg_nha join GIAOVIEN gv_nha on tg_nha.MAGV = gv_nha.MAGV
+                  WHERE gv_nha.HOTEN = N'Nguyễn Hoài An'
+                  EXCEPT
+                  SELECT R.madt --DS de tai giao vien T tham gia
+                  FROM THAMGIADT R 
+                  WHERE R.MAGV = T.MAGV)
+    AND EXISTS (SELECT tg_nha.MADT --S: DS ma de tai co Nguyen Hoai An tham gia -->không bắt buộc 
+                  FROM THAMGIADT tg_nha join GIAOVIEN gv_nha on tg_nha.MAGV = gv_nha.MAGV
+                  WHERE gv_nha.HOTEN = N'Nguyễn Hoài An') --Kiểm tra S rỗng hay không?
+
+Go
+/*****************************STORED PRODURE*****************************/
+--j.	Xuất ra toàn bộ danh sách giáo viên.
+create proc sp_XuatDSGV
+as 
+    select * from giaovien
+go 
+
+--Thực thi stored procedure 
+exec sp_XuatDSGV --không có tham số
+go
+
+--k.	Tính số lượng đề tài mà một giáo viên đang thực hiện. 
+--tham số đầu vào (input/mặc định): @magv 
+--tham số đầu ra (out/output): @sldt int --> bắt buộc phải khai báo out hoặc output phía sau KDL của tham số đầu ra 
+create proc sp_DemDeTai @magv char(5), @sldt int out
+as 
+    --Nếu không tồn tại @magv 
+    if(not exists(select * from giaovien where magv = @magv))
+        return 0 --báo thực thi thất bại 
+    select @sldt = count(distinct tg.madt) --hoặc thay bằng set @sldt = (select count(distinct tg.madt) from ...)
+    from thamgiadt tg where tg.magv = @magv 
+    return 1 --báo thực thi thành công 
+go 
+
+--Thực thi stored procedure 
+declare @res int, @sldt int --muốn sử dụng biến phải khai báo
+exec @res = sp_DemDeTai '002', @sldt out 
+--@sldt là tham số output khi thực thi phải có khai báo out phía sau tên tham số
+--biến @res là bắt giá trị trả ra của lệnh return để kiểm tra trạng thái thực thi của stored procedure 
+if (@res = 0)
+    print(N'Giao vien khong ton tai')
+else 
+    print 'So luong de tai cua giao vien: ' + cast(@sldt as char(3)) --có thể dùng convert (char(3), @sldt) thay thế 
+go
+
+--m.	Kiểm tra xem một giáo viên có tồn tại hay không (dựa vào MAGV).
+create proc sp_KTGV @magv char(5)
+as 
+    if(not exists(select * from giaovien where magv = @magv))
+        return 0
+    else 
+        return 1
+go 
+--Thực thi stored procedure 
+declare @res int
+exec @res = sp_KTGV '001'
+print @res
+
+go
+
+--l.	In thông tin chi tiết của một giáo viên(sử dụng lệnh print): 
+--Thông tin cá nhân (mã giáo viên, họ tên, ngày sinh), 
+--Số lượng đề tài tham gia, Số lượng thân nhân của giáo viên đó.
+create proc sp_InGiaoVien @magv char(5)
+as 
+    --Kiem tra giao vien ton tai
+    declare @res int
+    exec @res = sp_KTGV @magv
+    if(@res = 1)
+    begin 
+        declare @hoten nvarchar(100), @ngsinh datetime, @sldt int, @sltn int
+        select @hoten = hoten, @ngsinh = ngsinh from giaovien where magv = @magv
+        set @sldt = (select count(distinct madt) from thamgiadt where magv = @magv)
+        set @sltn = (select count(*) from nguoithan where magv = @magv)
+        print N'Thông tin giáo viên :'
+        print N'--Mã giáo viên: ' + @magv 
+        print N'--Họ tên giáo viên: ' + @hoten
+        print N'--Ngày sinh giáo viên: ' + cast(@ngsinh as char(12)) 
+        print N'--Số lượng đề tài: ' + cast(@sldt as char(3))
+        print N'--Số lượng thân nhân: ' + convert(char(3), @sltn) 
+    end
+    else
+        print N'Giáo viên không tồn tại!'
+go 
+--Thực thi stored procedure 
+exec sp_InGiaoVien '005'
+
+go
+
+/*n.Kiểm tra quy định của một giáo viên: 
+Chỉ được thực hiện các đề tài mà giáo viên của bộ môn của giáo viên đó làm chủ nhiệm.*/
+--Cách 1: Kiểm tra các phân công đã tồn tại --> độc lập câu o
+create proc sp_KiemTraPhanCong @magv char(5) --hoặc dùng tham số @kq int out 
+as
+	DECLARE @kq int
+	if(@magv in (
+      --Lấy dsgv có tham gia đề tài không phải trưởng bộ môn chủ nhiệm  
+	  select distinct gv.magv
+	  from THAMGIADT tg, GIAOVIEN gv, DETAI dt, GIAOVIEN gvcn
+	  where tg.MAGV = gv.MAGV and tg.MADT = dt.MADT and 
+	        dt.gvcndt = gvcn.MAGV and gv.mabm != gvcn.mabm))
+	    set @kq = 0 --không thoả mãn quy định
+	ELSE
+		set @kq = 1 --thoả mãn quy định
+	RETURN @kq
+go 
+--Thực thi stored procedure 
+declare @kq int
+EXEC @kq=sp_KiemTraPhanCong '005' --@kq out nếu lúc tạo sp dùng @kq như tham số output 
+select @kq
+print @kq
+go
+
+--Cách 2: Kiểm tra khi thêm 1 phân công mới --> để tái sử dụng trong câu o 
+create proc sp_KiemTraPhanCong_dk @magv char(5), @madt char(5)
+as 
+    declare @bm_gv char(5), @bm_gvcn char(5), @kq int 
+    set @bm_gv = (select mabm from giaovien where magv = @magv)
+    set @bm_gvcn = (select gvcn.mabm
+                    from detai dt join giaovien gvcn on dt.gvcndt = gvcn.magv
+                    where dt.madt = @madt)
+    if(@bm_gv != @bm_gvcn)
+        return 0
+    return 1
+go
+
+declare @kq int
+exec @kq = sp_KiemTraPhanCong_dk '003', '001'
+print @kq
+go
+
+--o.	Thực hiện thêm một phân công cho giáo viên thực hiện một công việc của đề tài:
+--Kiểm tra thông tin đầu vào hợp lệ: giáo viên phải tồn tại, công việc phải tồn tại, 
+--thời gian tham gia phải >0--sua lai phu cap 
+--Kiểm tra quy định ở câu n.
+create proc sp_PhanCongGiaoVien @magv char(5), @madt char(5), @stt int, @phucap float, @ketqua nchar(5)
+as 
+    --Kiểm tra đầu vào 
+    if(not exists(select * from giaovien where magv = @magv ))
+    begin 
+        print N'Giáo viên không tồn tại'   
+        return -1 --gv ko ton tai 
+    end 
+
+    if(not exists(select * from congviec where madt = @madt and sott = @stt ))
+    begin
+        print N'Đề tài không tồn tại'   
+        return -2 --cv ko ton tai 
+    end 
+
+    if(@phucap < 0)
+    begin
+        print N'Phụ cấp không thoả mãn' 
+        return -3 --phu cap khong hop le
+    end 
+
+    --Kiểm tra điều kiện câu n 
+    declare @kq_n int
+    exec @kq_n = sp_KiemTraPhanCong_dk @magv, @madt
+    if(@kq_n = 0)
+    BEGIN
+        print N'Điều kiện giáo viên tham gia đề tài do giáo viên cùng bộ môn chủ nhiệm ko thoả mãn' 
+        return -4 --ĐK giáo viên tham gia đề tài do giáo viên cùng bộ môn chủ nhiệm ko thoả mãn
+    end
+    --nếu câu n trả ra kq kiểm tra bằng tham số output 
+    ----exec sp_KiemTraPhanCong_dk @magv, @madt, @kq_n output
+
+    --Khi tất cả điều kiện thoả mãn, thêm vào bảngThamGiaDT
+    insert into ThamGiaDT values(@magv, @madt, @stt, @phucap, @ketqua)
+    print N'Thêm thành công'
+    return 1 --Thêm thành công 
+go 
+
+declare @r int
+exec @r=sp_PhanCongGiaoVien '001', '006', 1, 1, NULL
+if(@r=1)
+    select * from thamgiadt 
+
+go
+
+--p. Thực hiện xoá một giáo viên theo mã. Nếu giáo viên có thông tin liên quan (Có thân nhân, có làm đề tài, …) thì báo lỗi.
+create proc sp_Xoa @magv char(5)
+as
+    --Kiểm tra thoả điều kiện xoá không, nếu ko thoả thì return
+    --Nếu có thân nhân --> ko xoá, trả về -1 --> Báo lỗi xoá ko thành công
+    if(exists(select * from nguoithan where magv = @magv ))
+            return -1 
+
+    --Nếu thoả
+    delete ... 
+    return 1 --Xoá thành công
+go
+
+/*t.Mã giáo viên được xác định tự động theo quy tắc: 
+Nếu đã có giáo viên 001, 002, 003 thì MAGV của giáo viên mới sẽ là 004. 
+Nếu đã có giáo viên 001, 002, 005 thì MAGV của giáo viên mới là 003. */
+create proc sp_layMaTuDong @mamoi char(5) out
+as
+    declare @i int
+	set @i = 1
+	while(1=1)
+	begin
+		if(exists(select * from giaovien
+				  where convert(int, magv) = @i)) --magv='001' --> 1
+			set @i = @i + 1
+		else
+			break
+	end
+	--@i=5? chuyen sang '005'?
+    set @mamoi = REPLACE(STR(@i,3),' ', '0') 
+go
+--Thực thi stored procedure 
+declare @ma char(5)
+exec sp_layMaTuDong @ma out 
+print @ma
+go
+
+
+----Bài tập đặt phòng
+/*CSDL
+create table Phong (MaPhong char(5), TinhTrang nchar(10), LoaiPhong char(3), DonGia float)
+create table Khach (MaKH char(5), HoTen nvarchar(100), DiaChi nvarchar(100), DienThoai char(10))
+create table DatPhong (Ma int, MaKH char(5), MaPhong char(5), NgayDP datetime, NgayTra datetime, ThanhTien float)
+*/
+
+/*Tên stored procedure: spDatPhong
+Nội dung: ghi nhận thông tin đặt phòng của khách hàng xuống cơ sở dữ liệu.
+Tham số yêu cầu: mã khách hàng (@makh), mã phòng (@maphong), ngày đặt phòng (@ngaydat).
+Lưu ý: Mã đặt phòng là số nguyên và phải phát sinh tự động theo cách sau: mã đặt phòng phát sinh = mã đặt phòng lớn nhất + 1.
+Các yêu cầu và kiểm tra và tính toán:
+-	Kiểm tra mã khách hàng phải hợp lệ (phải xuất hiện trong bảng KHÁCH HÀNG) 
+-	Kiểm tra mã phòng hợp lệ (phải xuất hiện trong bảng PHÒNG) 
+-	Chỉ được đặt phòng khi tình trạng của phòng là “Rảnh”
+-	Nếu các kiểm tra hợp lệ thì ghi nhận thông tin đặt phòng xuống CSDL (Ngày trả và thành tiền của khi đặt phòng là NULL)
+-	Sau khi đặt phòng thành công thì phải cập nhật tình trạng của phòng là “Bận”
+Yêu cầu khác: Phải có diễn giải bằng lời của các bước thực hiện.*/
+create procedure spDatPhong @makh char(5), @maphong char(5), @ngaydat datetime 
+as
+    --Phát sinh mã đặt phòng 
+    declare @madp int 
+    set @madp = (select isnull(max(Ma),0) + 1 from DatPhong)
+  
+    --	Kiểm tra mã khách hàng phải hợp lệ (phải xuất hiện trong bảng KHÁCH HÀNG) 
+    if(not exists (select * from khach where makh = @makh))
+        return -1 --Không có khách hàng
+  
+    --	Kiểm tra mã phòng hợp lệ (phải xuất hiện trong bảng PHÒNG) 
+    if(not exists (select * from phong where maphong = @maphong))
+        return -2 --Không có phòng hợp lệ 
+  
+    --	Chỉ được đặt phòng khi tình trạng của phòng là “Rảnh”
+    if(not exists (select * from phong where maphong = @maphong and tinhtrang = N'Rảnh'))
+        return -3 --Phòng không trống 
+  
+    --	Nếu các kiểm tra hợp lệ thì ghi nhận thông tin đặt phòng xuống CSDL (Ngày trả và thành tiền của khi đặt phòng là NULL)
+    insert into DatPhong values (@madp, @makh, @maphong, @ngaydat, NULL, NULL)
+
+    --	Sau khi đặt phòng thành công thì phải cập nhật tình trạng của phòng là “Bận”
+    update Phong set TinhTrang = N'Bận' where ma = @madp 
+    return 1 --Đặt thành công
+
+go

@@ -1,0 +1,148 @@
+/*********************************************DEMO TOPIC 5: TRUY VẤN LỒNG **********************************************/
+/*
+- Định nghĩa: Sử dụng truy vấn con ở một mệnh đề nào đó trong truy vấn (Select, From, Where, ...)
+- Cú pháp:
+  Select col1, col2, (select ... from .. where) -- Truy vấn con ở Select
+  From tab1, tab2, (select ...) as T -- Truy vấn con ở From
+  Where tab2.luong > T.luong -- Truy vấn con ở Where
+
+*/
+
+/*
+- Truy vấn con ở Where hoặc Having: Kết nối cha-con
+  a. Dùng toán tử so sánh 
+     Select ... From
+     Where ttA = (Select B from ...) 
+     ==> Truy vấn con trả về 1 GIÁ TRỊ DUY NHẤT cùng kiểu dữ liệu và ngữ nghĩa với ttA (1 dòng, 1 cột)
+  
+  b. Dùng IN/NOT IN. 
+     Select ... From
+     Where ttA IN/NOT IN (Select B from ...) ttA IN (002, 004, 007)
+     ==> Truy vấn con trả về 1 CỘT DUY NHẤT cùng kiểu dữ liệu và ngữ nghĩa với ttA
+     ==> ttA IN (select B ...) <=> ttA = ANY (select B)
+
+  c. Dùng toán tử so sánh kết hợp lượng từ ALL(với mọi), ANY/SOME (ít nhất một).
+     Select ... From
+     Where ttA >= ALL (Select B from ...) 
+     ==> Truy vấn con trả về 1 CỘT DUY NHẤT cùng kiểu dữ liệu và ngữ nghĩa với ttA
+
+  d. Dùng EXISTS/NOT EXISTS.
+     Select ... From
+     Where exists (Select * from ...) 
+     ==> Kiểm tra truy vấn con có trả ra dữ liệu hay không nên KO QUAN TÂM SỐ CỘT trả về
+          - Truy vấn con trả ra 0 dòng ==> mệnh đề exists là FALSE
+          - Truy vấn con trả ra ít nhất 1 dòng ==> mệnh đề exists là TRUE
+  
+*/
+-- a. Dùng toán tử so sánh
+select * from giaovien gv where gv.luong > (select luong from giaovien where magv='001')
+
+--b. Dùng lượng từ hoặc mệnh đề exists/not exists
+-- Lớn hơn ít nhất 1
+select * from giaovien gv where gv.luong > ANY (select luong from giaovien where mabm='VS')
+
+-- Lớn hơn tất cả
+select * from giaovien gv where gv.luong > ALL (select luong from giaovien where mabm='VS')
+
+select * from giaovien gv where gv.luong > (select max(luong) from giaovien where mabm='VS')
+
+select * from giaovien gv 
+where not exists (select * from giaovien gv2 where gv2.mabm = 'VS' and gv2.luong >= gv.luong)
+
+--gv2 ra rong
+
+select * from giaovien gv where gv.luong = ANY (select luong from giaovien where mabm='VS')
+
+select gv.magv, (select ql.gvqlcm from giaovien ql where ql.magv = gv.gvqlcm) from giaovien gv
+
+
+--VD1: Tìm giáo viên (tất cả) có tham gia đề tài.
+select gv.* from giaovien gv
+where gv.magv IN (select magv from thamgiadt) -- gv có mã NẰM TRONG (IN) các mã giáo viên có trong thamgiadt
+
+select gv.*  from giaovien gv
+where gv.magv = ANY (select magv from thamgiadt) -- gv có mã BẰNG BẤT KỲ (= ANY) một mã giáo viên nào có trong bảng thamgiadt
+
+select gv.* from giaovien gv
+where exists (select * from thamgiadt tg where tg.magv = gv.magv) -- TỒN TẠI ít nhất 1 dòng trong thamgiadt có mã giống với gv đang xét
+
+select gv.* from giaovien gv
+where (select distinct tg.magv from thamgiadt tg where tg.magv = gv.magv) >= 1 -- Thảo luận: Tại sao cần phải có distinct???
+
+
+--VD1bis: Tìm giáo viên (tất cả) không có tham gia đề tài.
+select gv.*  from giaovien gv
+where gv.magv not IN (select magv from thamgiadt) -- gv.magv KHÔNG NẰM TRONG (NOT IN) danh sách mã tham gia
+
+select gv.*  from giaovien gv
+where gv.magv != ALL (select magv from thamgiadt) -- gv.magv KHÁC TẤT CẢ (!= ALL) các giá trị trong danh sách mã tham gia
+
+select gv.* from giaovien gv 
+where not exists (select * from thamgiadt tg where tg.magv = gv.magv) -- KHÔNG TỒN TẠI dòng nào trong thamgiadt có mã giống với gv đang xét 
+
+select gv.* from giaovien gv
+where (select distinct tg.magv from thamgiadt tg where tg.magv = gv.magv) = 0 -- Thảo luận: Kết quả trả ra???
+
+--VD2: Tìm giáo viên (magv, hoten) có lương lớn nhất.
+select * from giaovien where luong = (select max(luong) from giaovien)
+-- LỒNG PHÂN CẤP (NONCORRELATED)
+
+--VD3: Tìm giáo viên (magv, hoten) có lương lớn nhất của từng khoa.
+-- Dùng toán tử so sánh: luong = max
+SELECT GV.MAGV, GV.HOTEN, BM.MAKHOA 
+FROM GIAOVIEN GV JOIN BOMON BM ON GV.MABM = BM.MABM 
+WHERE GV.LUONG = (SELECT MAX(GV2.LUONG) 
+                  FROM GIAOVIEN GV2 JOIN BOMON BM2 ON GV2.MABM = BM2.MABM
+                  WHERE BM2.MAKHOA = BM.MAKHOA) -- Chỉ lấy những giáo viên cùng khoa với gv đang xét 
+-- LỒNG TƯƠNG QUAN (CORRELATED)
+
+-- Dùng lượng từ >= ALL
+SELECT GV.MAGV, GV.HOTEN, BM.MAKHOA 
+FROM GIAOVIEN GV JOIN BOMON BM ON GV.MABM = BM.MABM 
+WHERE GV.LUONG >= ALL (SELECT GV2.LUONG
+                       FROM GIAOVIEN GV2 JOIN BOMON BM2 ON GV2.MABM = BM2.MABM
+                       WHERE BM2.MAKHOA = BM.MAKHOA) 
+
+-- Dùng kiểm tra tồn tại/không tồn tại: "Không tồn tại giáo viên cùng khoa có lương lớn hơn người đang xét".
+SELECT GV.MAGV, GV.HOTEN, BM.MAKHOA 
+FROM GIAOVIEN GV JOIN BOMON BM ON GV.MABM = BM.MABM 
+WHERE NOT EXISTS (SELECT *
+                  FROM GIAOVIEN GV2 JOIN BOMON BM2 ON GV2.MABM = BM2.MABM
+                  WHERE BM2.MAKHOA = BM.MAKHOA AND GV2.LUONG > GV.LUONG) 
+
+
+--VD4: Tìm giáo viên (magv, hoten) tham gia nhiều đề tài nhất.
+SELECT GV.MAGV, GV.HOTEN
+FROM GIAOVIEN GV JOIN THAMGIADT TG ON GV.MAGV = TG.MAGV
+GROUP BY GV.MAGV, GV.HOTEN
+HAVING COUNT(DISTINCT TG.MADT) >= ALL (SELECT COUNT(DISTINCT TG2.MADT)
+                                       FROM THAMGIADT TG2
+                                       GROUP BY TG2.MAGV)
+
+
+
+
+/*********************************************DEMO TOPIC 6: PHÉP TOÁN TẬP HỢP ********************************************/
+--VD2: Tìm giáo viên (magv, hoten) có lương lớn nhất.
+-- KHÔNG SỬ DỤNG ALL HAY HÀM MAX
+-- DÙNG PHÉP TOÁN TẬP HỢP: INTERSECT, UNION, EXCEPT
+/* CÚ PHÁP:
+SELECT A, B FROM ...
+UNION
+SELECT C, D FROM ...
+
+SELECT A, B FROM ...
+INTERSECT
+SELECT C, D FROM ...
+
+SELECT A, B FROM ...
+EXCEPT
+SELECT C, D FROM ...
+
+*/
+SELECT GV.* -- TẬP GIÁO VIÊN HIỆN CÓ
+FROM GIAOVIEN GV 
+EXCEPT 
+SELECT DISTINCT GV1.* -- TẬP GIÁO VIÊN CÓ ÍT NHẤT 1 NGƯỜI CÓ LƯƠNG LỚN HƠN ==> GIÁO VIÊN KHÔNG CÓ LƯƠNG LỚN NHẤT
+FROM GIAOVIEN GV1, GIAOVIEN GV2 
+WHERE GV1.LUONG < GV2.LUONG

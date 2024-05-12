@@ -1,0 +1,281 @@
+
+<!-- saved from url=(0054)https://pdos.csail.mit.edu/6.1810/2022/labs/pgtbl.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Lab: page tables</title>
+<link rel="stylesheet" href="./Lab3_ page tables_files/labs.css" type="text/css">
+<script src="./Lab3_ page tables_files/guidance.js.download"></script>
+</head>
+<body>
+
+<h1>Lab: page tables</h1>
+
+<p> In this lab you will explore page tables and modify them to
+  speed up certain system calls and to detect which pages have been accessed.
+
+</p><div class="prereq">
+<p>Before you start coding, read Chapter 3 of
+  the <a href="https://pdos.csail.mit.edu/6.1810/2022/xv6/book-riscv-rev3.pdf">xv6 book</a>, and related files:
+
+  </p><ul>
+   <li> <tt>kernel/memlayout.h</tt>, which captures the layout of memory.
+	  
+    </li><li> <tt>kernel/vm.c</tt>, which contains most virtual memory (VM) code.
+
+    </li><li> <tt>kernel/kalloc.c</tt>, which contains code for allocating and
+    freeing physical memory.
+  
+  </li></ul>
+
+It may also help to consult the <a href="https://github.com/riscv/riscv-isa-manual/releases/download/Ratified-IMFDQC-and-Priv-v1.11/riscv-privileged-20190608.pdf">RISC-V privileged architecture manual</a>.
+
+</div>
+
+<p>To start the lab, switch to the pgtbl branch:
+  </p><pre>  $ <kbd>git fetch</kbd>
+  $ <kbd>git checkout pgtbl</kbd>
+  $ <kbd>make clean</kbd>
+  </pre>
+
+<h2>Speed up system calls <script>g("easy")</script>(<a class="easy" href="https://pdos.csail.mit.edu/6.1810/2022/labs/guidance.html">easy</a>)</h2>
+
+<p>
+Some operating systems (e.g., Linux) speed up certain system calls by sharing
+data in a read-only region between userspace and the kernel. This eliminates the
+need for kernel crossings when performing these system calls.  To help you learn
+how to insert mappings into a page table, your first task is to implement this
+optimization for the <tt>getpid()</tt> system call in xv6.
+
+</p><div class="required">
+When each process is created, map one read-only page at USYSCALL (a
+virtual address defined
+in <tt>memlayout.h</tt>). At the start of this page, store a <tt>struct
+usyscall</tt> (also defined in <tt>memlayout.h</tt>), and initialize it to store
+the PID of the current process. For this lab, <tt>ugetpid()</tt> has been
+provided on the userspace side and will automatically use the USYSCALL mapping.
+You will receive full credit for this part of the lab if the <tt>ugetpid</tt> test
+case passes when running <tt>pgtbltest</tt>.
+</div>
+
+<p>Some hints:
+</p><ul>
+  <li>You can perform the mapping in <tt>proc_pagetable()</tt> in <tt>kernel/proc.c</tt>.
+  </li><li>Choose permission bits that allow userspace to only read the page.
+  </li><li>You may find that <tt>mappages()</tt> is a useful utility.
+  </li><li>Don't forget to allocate and initialize the page in <tt>allocproc()</tt>.
+  </li><li>Make sure to free the page in <tt>freeproc()</tt>.
+</li></ul>
+ 
+<div class="question">
+Which other xv6 system call(s) could be made faster using this shared page?
+Explain how.
+</div>
+
+<h2>Print a page table <script>g("easy")</script>(<a class="easy" href="https://pdos.csail.mit.edu/6.1810/2022/labs/guidance.html">easy</a>)</h2>
+
+<p>
+To help you visualize RISC-V page tables, and perhaps
+to aid future debugging, your second task is to write a function
+that prints the contents of a page table.
+
+</p><div class="required">
+Define a function called <tt>vmprint()</tt>.
+It should take
+a <tt>pagetable_t</tt> argument, and print that pagetable
+in the format described below.
+Insert <tt>if(p-&gt;pid==1) vmprint(p-&gt;pagetable)</tt> in
+  exec.c just before the <tt>return argc</tt>,
+to print the first process's page table.
+  You receive full credit for this part of the lab
+  if you pass the <tt>pte printout</tt> test of <tt>make grade</tt>.
+  
+</div>
+
+<p>
+Now when you start xv6 it should print output like this, describing
+the page table of the first process at the point when it has just
+finished <tt>exec()</tt>ing <tt>init</tt>:
+
+  </p><pre>page table 0x0000000087f6b000
+ ..0: pte 0x0000000021fd9c01 pa 0x0000000087f67000
+ .. ..0: pte 0x0000000021fd9801 pa 0x0000000087f66000
+ .. .. ..0: pte 0x0000000021fda01b pa 0x0000000087f68000
+ .. .. ..1: pte 0x0000000021fd9417 pa 0x0000000087f65000
+ .. .. ..2: pte 0x0000000021fd9007 pa 0x0000000087f64000
+ .. .. ..3: pte 0x0000000021fd8c17 pa 0x0000000087f63000
+ ..255: pte 0x0000000021fda801 pa 0x0000000087f6a000
+ .. ..511: pte 0x0000000021fda401 pa 0x0000000087f69000
+ .. .. ..509: pte 0x0000000021fdcc13 pa 0x0000000087f73000
+ .. .. ..510: pte 0x0000000021fdd007 pa 0x0000000087f74000
+ .. .. ..511: pte 0x0000000020001c0b pa 0x0000000080007000
+init: starting sh
+  </pre>
+
+The first line displays the argument to <tt>vmprint</tt>.
+After that there is a line for each PTE, including PTEs that
+refer to page-table pages deeper in the tree.
+Each PTE line is indented by a number of <tt>" .."</tt> that indicates its
+depth in the tree.
+Each PTE line shows the PTE index in its page-table page, the pte bits, and the
+physical address extracted from the PTE.
+Don't print PTEs that are not valid.  In the above example, the
+top-level page-table page has mappings for entries 0 and 255.  The next
+level down for entry 0 has only index 0 mapped, and the bottom-level
+for that index 0 has entries 0, 1, and 2 mapped.
+
+<p>
+Your code might emit different physical addresses than those shown above.
+The number of entries and the virtual addresses should be the same.
+</p>
+
+<p>Some hints:
+</p><ul>
+  <li>You can put <tt>vmprint()</tt> in <tt>kernel/vm.c</tt>.
+  </li><li>Use the macros at the end of the file kernel/riscv.h.
+  </li><li>The function <tt>freewalk</tt> may be inspirational.
+  </li><li>Define the prototype for <tt>vmprint</tt> in kernel/defs.h so
+    that you can call it from exec.c.
+  </li><li>Use <tt>%p</tt> in your printf calls to print out full 64-bit hex PTEs and addresses as shown in the example.</li>
+</ul>
+
+<div class="question">
+Explain the output of <tt>vmprint</tt> in terms of Fig 3-4 from the
+text.  What does page 0 contain? What is in page 2?
+When running in user mode, could the process read/write the memory
+mapped by page 1? What does the third to last page contain?
+</div>
+
+<h2>Detect which pages have been accessed <script>g("hard")</script>(<a class="hard" href="https://pdos.csail.mit.edu/6.1810/2022/labs/guidance.html">hard</a>)</h2>
+
+<p>
+Some garbage collectors (a form of automatic memory management) can benefit
+from information about which pages have been accessed (read or write). In this
+part of the lab, you will add a new feature to xv6 that detects and reports this
+information to userspace by inspecting the access bits in the RISC-V page table.
+The RISC-V hardware page walker marks these bits in the PTE whenever it resolves
+a TLB miss.
+
+ </p><div class="required">
+Your job is to implement <tt>pgaccess()</tt>, a system call that reports which
+pages have been accessed. The system call takes three arguments. First, it takes
+the starting virtual address of the first user page to check. Second, it takes the
+number of pages to check. Finally, it takes a user address to a buffer to store
+the results into a bitmask (a datastructure that uses one bit per page and where
+the first page corresponds to the least significant bit). You will receive full
+credit for this part of the lab if the <tt>pgaccess</tt> test case passes when
+running <tt>pgtbltest</tt>.
+</div>
+
+<p>Some hints:
+  </p><ul>
+  <li>Read <tt>pgaccess_test()</tt> in <tt>user/pgtlbtest.c</tt> to
+    see how <tt>pgaccess</tt> is used.
+  </li><li>Start by implementing <tt>sys_pgaccess()</tt> in <tt>kernel/sysproc.c</tt>.
+  </li><li>You'll need to parse arguments using <tt>argaddr()</tt> and <tt>argint()</tt>.
+  </li><li>For the output bitmask, it's easier to store a temporary buffer in the kernel and copy it to the user (via <tt>copyout()</tt>) after filling it with the right bits.
+  </li><li>It's okay to set an upper limit on the number of pages that can be scanned.
+  </li><li><tt>walk()</tt> in <tt>kernel/vm.c</tt> is very useful for finding the right PTEs.
+  </li><li>You'll need to define <tt>PTE_A</tt>, the access bit,
+    in <tt>kernel/riscv.h</tt>. Consult
+    the <a href="https://github.com/riscv/riscv-isa-manual/releases/download/Ratified-IMFDQC-and-Priv-v1.11/riscv-privileged-20190608.pdf">RISC-V
+    privileged architecture manual</a> to determine its value.
+  </li><li>Be sure to clear <tt>PTE_A</tt> after checking if it is set. Otherwise, it won't be possible to determine if the page was accessed since the last time <tt>pgaccess()</tt> was called (i.e., the bit will be set forever).
+  </li><li><tt>vmprint()</tt> may come in handy to debug page tables.
+</li></ul>
+
+<p><a name="submit">
+</a></p><h2><a name="submit">Submit the lab</a></h2><a name="submit">
+
+<p><b>This completes the lab.</b> Make sure you pass all of the make
+grade tests. If this lab had questions, don't forget to write up your
+answers to the questions in answers-<i>lab-name</i>.txt. Commit your changes
+(including adding answers-<i>lab-name</i>.txt) and type make handin in the lab
+  directory to hand in your lab.
+
+</p><h3>Time spent</h3>
+
+<p>Create a new file, <tt>time.txt</tt>, and put in it a single integer, the
+number of hours you spent on the lab. Don't forget to <tt>git add</tt> and
+<tt>git commit</tt> the file.
+
+</p><h3>Submit</h3>
+
+You will turn in your assignments using
+the </a><a href="https://6828.scripts.mit.edu/2022/handin.py/">submission
+website</a>.  You need to request once an API key from the submission
+website before you can turn in any assignments or labs.
+<p></p>
+
+<p>After committing your final changes to the lab, type <kbd>make
+handin</kbd> to submit your lab.
+</p><pre>$ <kbd>git commit -am "ready to submit my lab"</kbd>
+[util c2e3c8b] ready to submit my lab
+ 2 files changed, 18 insertions(+), 2 deletions(-)
+
+$ <kbd>make handin</kbd>
+tar: Removing leading `/' from member names
+Get an API key for yourself by visiting https://6828.scripts.mit.edu/2022/handin.py/
+Please enter your API key: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 79258  100   239  100 79019    853   275k --:--:-- --:--:-- --:--:--  276k
+$
+</pre>
+<kbd>make handin</kbd> will store your API key in <i>myapi.key</i>. If you need
+to change your API key, just remove this file and let <kbd>make handin</kbd>
+generate it again (<i>myapi.key</i> must not include newline characters).
+<p></p>
+
+<p>
+If you run <kbd>make handin</kbd> and you have either uncomitted changes or
+untracked files, you will see output similar to the following:
+</p><pre> M hello.c
+?? bar.c
+?? foo.pyc
+Untracked files will not be handed in.  Continue? [y/N]
+</pre>
+Inspect the above lines and make sure all files that your lab solution needs
+are tracked i.e. not listed in a line that begins with <kbd>??</kbd>.
+You can cause <tt>git</tt> to track a new file that you create using
+<tt>git add filename</tt>.
+<p></p>
+
+<p>
+If <kbd>make handin</kbd> does not work properly, 
+try fixing the problem with the curl or Git commands.
+Or you can run <kbd>make tarball</kbd>.
+This will make a tar file for you, which you can
+then upload via our 
+<a href="https://6828.scripts.mit.edu/2022/handin.py/">web interface</a>.
+</p>
+
+<p>
+</p><div class="warning">
+<ul>
+  <li>Please run `make grade` to ensure that your code passes all of the tests</li>
+  <li>Commit any modified source code before running `make handin`</li>
+  <li>You can inspect the status of your submission and download the submitted
+code at <a href="https://6828.scripts.mit.edu/2022/handin.py/">https://6828.scripts.mit.edu/2022/handin.py/</a> </li>
+</ul>
+</div>
+
+
+
+
+<h2>Optional challenge exercises</h2>
+
+<ul>
+
+  <li>Use super-pages to reduce the number of PTEs in page tables.
+
+  </li><li>Unmap the first page of a user process so that dereferencing a
+  null pointer will result in a fault.  You will have to
+  change <tt>user.ld</tt> to start the user text segment at, for
+  example, 4096, instead of 0.
+
+  </li><li>Add a system call that reports dirty pages (modified pages) using <tt>PTE_D</tt>.
+
+</li></ul>
+
+
+
+</body></html>
