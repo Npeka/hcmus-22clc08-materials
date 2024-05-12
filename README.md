@@ -1,17 +1,12 @@
 # Share tài liệu môn học K22-CLC08 dành cho khóa K23 trở về sau
 
-## Update 1/2/2024
-- Các môn toán, lý chỉ mới có slide, đề thi các năm sẽ update sau
-- Các môn code như KTLT, DSA,... đã có các đề kiểm tra mẫu, nếu cần lời giải mình sẽ up tham khảo
-
 ## Pass sách
-- Nhập môn lập trình (có highlight, còn mới): 35k (giá gốc 84k)
-- Mạng máy tính (có highlight, hơi cũ 1 chút): 35k (giá gốc 90k)
-- Lập trình hướng đối tượng: 40k (giá gốc 88k)
-- Cơ sở dữ liệu:
-- Hệ điều hành:
-- Bài tập xstk: 
+- Nhập môn lập trình: 30k (gốc 84k)
+- Lập trình hướng đối tượng: 30k (gốc 88k)
+- Cơ sở dữ liệu: 25k (gốc 63k)
+- Hệ điều hành: 35k (gốc 92k)
+- Bài tập xstk: 15k (gốc 30k)
 
-## Nếu có sai sót hay cần thêm gì thì các bạn liên hệ mình nhe
-- Facebook: https://www.facebook.com/profile.php?id=100088048156021 \
+## Thông tin liên hệ nếu cần
+- Facebook: https://www.facebook.com/profile.php?id=100088048156021
 - Gmail: npkhang287@gmail.com
