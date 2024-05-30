@@ -1,1 +1,1 @@
-httpsgithub.comntkwancsc10004-sorting-algorithms
+https://github.com/ntkwan/csc10004-sorting-algorithms
