@@ -1,12 +1,14 @@
-# Share tài liệu môn học K22-CLC08 dành cho khóa K23 trở về sau
+# Share tài liệu môn học 22CLC08 dành cho khóa K23 trở về sau
 
 ## Pass sách
+
 - Nhập môn lập trình: 30k (gốc 84k)
 - Lập trình hướng đối tượng: 30k (gốc 88k)
 - Cơ sở dữ liệu: 25k (gốc 63k)
 - Hệ điều hành: 35k (gốc 92k)
 - Bài tập xstk: 15k (gốc 30k)
 
-## Thông tin liên hệ nếu cần
+## Thông tin liên hệ
+
 - Facebook: https://www.facebook.com/profile.php?id=100088048156021
 - Gmail: npkhang287@gmail.com
