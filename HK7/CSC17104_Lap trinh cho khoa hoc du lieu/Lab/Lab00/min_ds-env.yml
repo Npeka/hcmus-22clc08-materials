@@ -1,0 +1,19 @@
+name: min_ds-env
+channels:
+- conda-forge
+dependencies:
+- notebook
+- jupyterlab
+- requests
+- requests-cache
+- beautifulsoup4
+- selenium
+- python-chromedriver-binary
+- matplotlib
+- numpy
+- pandas
+- openpyxl= # Help pandas read excel files
+- scikit-learn
+- nbdime
+- seaborn
+- git
