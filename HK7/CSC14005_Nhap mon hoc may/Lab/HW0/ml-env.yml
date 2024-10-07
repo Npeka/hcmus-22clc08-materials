@@ -1,0 +1,12 @@
+# Last update: 17/01/2024
+name: ml-env
+channels:
+- conda-forge
+dependencies:
+- jupyterlab=3.6.6
+- python=3.11.7
+- matplotlib=3.8.2
+- numpy=1.26.3
+#- nbgrader # For teacher 
+#- pandas # For teacher
+#- openpyxl # For teacher 
