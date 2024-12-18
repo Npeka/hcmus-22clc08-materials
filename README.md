@@ -9,7 +9,7 @@
 - Bài tập xstk: 15k (gốc 30k) - đã pass
 
 ## Tình nguyện viên
-- Mình cần một vài bạn tình nguyện duy trì repo này cho các khóa sau, ai hứng thú liên hệ mình nhe :>  
+- Mình cần một vài bạn tình nguyện duy trì repo này cho các khóa sau, ai hứng thú liên hệ mình nhe, mình xin cảm ơn :>  
 
 ## Thông tin liên hệ
 
