@@ -1,36 +1,35 @@
 - HK5
 	+ Hệ Điều Hành (xv6 - vấn đáp full 10)
-		. Lab 1: code + report 30k
-		. Lab 2: code + report 30k
-		. Lab 3: code + report 30k
-		. Cheatsheet cuối kì + leak đề thi cũ (2023 - 2024): 30k
+		. Lab 1: code + report 15k
+		. Lab 2: code + report 15k
+		. Lab 3: code + report 15k
+		. Cheatsheet cuối kì + leak đề thi cũ (2023 - 2024): 15k
 - HK6
 	+ Nhập môn công nghệ phần mềm 
-		. Cheatsheet: 40k
+		. Cheatsheet: 20k
 	+ Cơ sở trí tuệ nhân tạo
-		. Lab 1: 20k -> code + report (latex) -> 10 điểm
-		. Lab 2: 20k -> code + report (latex) -> 10 điểm
+		. Lab 1: 10k -> code + report (latex)
+		. Lab 2: 10k -> code + report (latex)
 		. Lab 3: none
 	+ Toán ứng dụng và thống kê
-		. Lab 1: 30k -> code + report (word)  -> 10 điểm
-		. Lab 2: 30k -> code + report (latex) -> 10 điểm
-		. Lab 3: 30k -> code + report (latex) -> 10 điểm
-		* hướng dẫn tránh mất điểm vì cô Uyên chấm khó
+		. Lab 1: 15k -> code + report (word)
+		. Lab 2: 15k -> code + report (latex)
+		. Lab 3: 15k -> code + report (latex)
 + HK7
 	+ Nhập môn học máy
-		. Lab 1: 20k
-		. Lab 2: 20k
-		. Lab 3: 20k
-		. Lab 4: 20k
-		. Final lab: 30k
-		. Midterm: 30k
+		. Lab 1: 10k
+		. Lab 2: 10k
+		. Lab 3: 10k
+		. Lab 4: 10k
+		. Final lab: 20k
+		. Midterm: 15k
 	+ Vật lý cho công nghệ thông tin
-		. Lab 1: 20k
-		. Lab 2: 20k
-		. Lab 3: 20k
+		. Lab 1: 10k
+		. Lab 2: 10k
+		. Lab 3: 10k
 	+ Lập trình khoa học dữ lieu
-		. Homework 1 -> 8: mỗi bài 20k
-		. Lab 1 -> 3: mỗi bài 20k
+		. Homework 1 -> 8: mỗi bài 5k
+		. Lab 1 -> 3: mỗi bài 10k
 
 Liên hệ:
 - Facebook: https://www.facebook.com/profile.php?id=100088048156021
