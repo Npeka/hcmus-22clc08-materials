@@ -1,0 +1,10 @@
+C Execution Time for size = 10: 0.000003 seconds
+C Execution Time for size = 25: 0.000056 seconds
+C Execution Time for size = 50: 0.000422 seconds
+C Execution Time for size = 75: 0.001452 seconds
+C Execution Time for size = 100: 0.003312 seconds
+C Execution Time for size = 250: 0.048853 seconds
+C Execution Time for size = 500: 0.393241 seconds
+C Execution Time for size = 750: 1.421240 seconds
+C Execution Time for size = 1000: 3.490429 seconds
+C Execution Time for size = 1250: 7.194873 seconds
